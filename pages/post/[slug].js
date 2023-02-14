@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import { Author, Categories, Comments, CommentsForm, Loader, PostDetail, PostWidget } from '../../components'
-import { getPostDetails } from '../../services'
+import { getPostDetails, getPosts } from '../../services'
 
 export default function PostDetails({ post }) {
     const router = useRouter()
@@ -41,10 +41,10 @@ export async function getStaticProps({ params }) {
     }
 }
 
-// export async function getStaticPaths() {
-//     const posts = await getPosts()
-//     return {
-//         paths: posts.map(({ node: { slug } }) => ({ params: { slug } })),
-//         fallback: true
-//     }
-// }
+export async function getStaticPaths() {
+    const posts = await getPosts()
+    return {
+        paths: posts.map(({ node: { slug } }) => ({ params: { slug } })),
+        fallback: true
+    }
+}
