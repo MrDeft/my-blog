@@ -1,13 +1,14 @@
-import { useRouter } from 'next/router'
-import React from 'react'
-import { Author, Categories, Comments, CommentsForm, Loader, PostDetail, PostWidget } from '../../components'
-import { getPostDetails, getPosts } from '../../services'
+import { useRouter } from 'next/router';
+import React from 'react';
 
-export default function PostDetails({ post }) {
+import { Author, Comments, Categories, CommentsForm, Loader, PostDetail, PostWidget, SinglePost } from '../../components';
+import { getPostDetails, getPosts } from '../../services';
+
+const PostDetails = ({ post }) => {
     const router = useRouter()
 
     if (router.isFallback) {
-        <Loader />
+        return <Loader />
     }
 
     return (
@@ -24,12 +25,14 @@ export default function PostDetails({ post }) {
                     <Author author={post.author} />
                     <CommentsForm slug={post.slug} />
                     <Comments slug={post.slug} />
+                    <SinglePost slug={post.slug} categories={post.categories.map(category => category.slug)} />
                 </div>
             </div>
         </div>
     )
-}
+};
 
+export default PostDetails;
 
 export async function getStaticProps({ params }) {
     const data = await getPostDetails(params.slug)
